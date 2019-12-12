@@ -33,6 +33,11 @@ Route::group(['namespace' => 'Frontend', 'as' => 'frontend.'], function () {
     Route::post('register/store','RegisterController@store')->name('register.store');
     /*------------------------- register page end----------------------------*/
 
+    /*------------------------- update register page start----------------------------*/
+    Route::get('edit-profile/{key}/{id}','EditProfileController@index')->name('editProfile.index');
+    Route::post('edit-profile-update/{key}/{id}','EditProfileController@update')->name('editProfile.update');
+    /*------------------------- update register page end----------------------------*/
+
     /*------------------------- forgot password page start----------------------------*/
     Route::get('forgotPassword','ForgotPasswordController@index')->name('forgotPassword.index');
     /*------------------------- forgot password page end----------------------------*/
@@ -60,13 +65,23 @@ Route::group(['namespace' => 'Frontend', 'as' => 'frontend.'], function () {
 
         /*=============================== assign lead route when login  start ===============================*/
         Route::get('lead-list','AssignLeadController@index')->name('assignLead.index');
+        Route::post('charge', 'AssignLeadController@charge')->name('assignLead.charge');
+
+        Route::get('my-checkout/{id}', 'AssignLeadController@myCheckout')->name('assignLead.myCheckout');
 
         /*=============================== assign lead route when login  end ===============================*/
 
         /*=============================== purchase lead route when login  start ===============================*/
-        Route::get('purchase-lead-list','PurchaseLeadController@index')->name('purchaseLead.index');
+        Route::get('my-purchase-lead-list','PurchaseLeadController@index')->name('purchaseLead.index');
 
         /*=============================== purchase lead route when login  end ===============================*/
+
+        /*=============================== purchase order lead route when login  start ===============================*/
+        Route::get('my-order-list','OrderController@index')->name('orderLead.index');
+        Route::post('my-refund','OrderController@refund')->name('orderLead.refund');
+        Route::get('my-return-order','OrderController@refundOrder')->name('orderLead.refundOrder');
+
+        /*=============================== purchase order lead route when login  end ===============================*/
 
         /*================================ knowledge Route =====================================*/
         Route::get('knowledge-based', 'KnowledgeController@index')->name('knowledge.index');

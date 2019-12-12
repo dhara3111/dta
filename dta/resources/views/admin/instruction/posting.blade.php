@@ -16,7 +16,8 @@
       <!-- endinject -->
 
       <!--begin::Favicon Icon -->
-      <link rel="shortcut icon" href="{{asset('ourLogoImages/favicon_2.png')}}" />
+      <link rel="shortcut icon" href="{{asset('ourLogoImages/'.$otherDetail->favicon)}}" />
+
 
    </head>
    <body>
@@ -37,7 +38,7 @@
                      <tbody>
                         <tr>
                            <th>Post URL</th>
-                           <td>{{route('admin.postingInstruction.posting',['id'=>$type->id])}}</td>
+                           <td>http://dta.lawclimb.com/api/auth/lead/</td>
                         </tr>
                         <tr>
                            <th>Request Method</th>

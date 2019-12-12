@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>@yield('title') | {{$otherDetail->website_name}} </title>
+    <title>Forgot Password | {{$otherDetail->website_name}} </title>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -36,7 +36,13 @@
             <div class="row">
                 <div class="v3-menu">
                     <div class="v3-m-1">
-                        <a href=""><span class="color_fff">Direct To Attorney</span></a>
+                        <a href="{{route('frontend.home.index')}}">
+                            <span class="color_fff">
+                                <img alt="" src="{{asset('ourLogoImages/'.$otherDetail->image)}}" style="margin-top: -8px;"/>
+                            </span>
+                        </a>
+                    </div>
+                    <div class="v3-m-2">
                     </div>
                 </div>
             </div>
@@ -95,8 +101,18 @@
                         @endif
                     </div>
                 </div>
+                <!--<div class="checkbox pull-right">-->
+                <!--    <span class="link-not-important ">Are you a already member ?</span>-->
+                <!--    <a href="{{ route('frontend.login.index') }}" class="link-not-important " style="color:#da2129"> Login </a>-->
+                <!--    <br>-->
+                <!--</div>-->
+                <!--<div>-->
+                <!--    <div class="input-field s4">-->
+                <!--        <input type="submit" value="submit" class="waves-effect waves-light log-in-btn">-->
+                <!--    </div>-->
+                <!--</div>-->
                 <div class="checkbox">
-                    <a href="{{ route('frontend.login.index') }}" class="link-not-important pull-right">Are you a already member ? Login </a>
+                    <a href="{{ route('frontend.login.index') }}" class="link-not-important pull-right" style="color:#da2129">< Back to Login</a>
                     <br>
                 </div>
                 <div>
@@ -160,7 +176,7 @@
 <!--COPY RIGHTS-->
 <section class="copy">
     <div class="container">
-        <p>© 2019 <lable style="color:#ff4702;">{{$otherDetail->website_name}}</lable>. All Rights Reserved By <a href="http://dwarkeshit.in/" class="m-link" style="color:#fd0007;" target="_">Dwarkesh Business Solution</a></p>
+         <p>© 2019 <lable style="color:#da2129;">{{$otherDetail->website_name}}</lable></p>
     </div>
 </section>
 

@@ -38,14 +38,31 @@
     <style>
         .login-button {
             color: #fff;
-            background-color: #f77747;
-            border-color: #f77747;
+            background-color: #da2129 ;
+            border-color: #da2129 ;
         }
         .login-button:hover {
             color: #fff;
-            background-color: #4c4c4c;
-            border-color: #4c4c4c;
+            background-color: #000000;
+            border-color: #000000;
         }
+
+
+        @media only screen and (min-width:0px) and (max-width:800px) {
+            .m-login.m-login--6 .m-login__aside {
+                padding: 0rem 2rem !important;
+            }
+            .m-login.m-login--6 .m-login__wrapper {
+                padding: 0 2rem !important;
+            }
+
+        }
+        .bg-whitesmoke{
+            /*background: whitesmoke !important;*/
+        }
+
+
+
     </style>
 </head>
 
@@ -61,9 +78,9 @@
             <div class="m-grid__item">
                 <div class="m-login__logo text-center">
                     <a href="javascript:void(0)">
-                        <img src="{{asset('ourLogoImages/'.$otherDetail->image)}}" style="padding-top:30%;width: 100%;" >
+                        <img src="{{asset('ourLogoImages/'.$otherDetail->image)}}" style="padding-top:25%;width: 100%;" >
                     </a>
-                    {{--<h1 style="color:white;font-size:50px;">Direct To Attorney</h1>--}}
+                    {{--<h6 class="pull-right" style="color:#000000;">Direct To Attorney Leads...</h6>--}}
                 </div>
             </div>
             <div class="m-grid__item m-grid__item--fluid m-grid m-grid--ver">
@@ -73,7 +90,7 @@
                 </div>
             </div>
         </div>
-        <div class="m-grid__item m-grid__item--fluid  m-grid__item--order-tablet-and-mobile-1  m-login__wrapper">
+        <div class="m-grid__item m-grid__item--fluid bg-whitesmoke m-grid__item--order-tablet-and-mobile-1  m-login__wrapper">
 
             <!--begin::Body-->
             <div class="m-login__body">
@@ -127,13 +144,10 @@
 
                         <!--begin::Action-->
                         <div class="m-login__action">
-                            {{--<a href="#" class="m-link">--}}
-                            {{--<span>Forgot Password ?</span>--}}
-                            {{--</a>--}}
-                            <a href="{{ route('admin.forgetPassword.index') }}" id="" class="m-link" style="color: #4c4c4c;">Forgot Password ?</a>
-                            {{--<a href="#">--}}
-                                <button type="submit" id="" class="btn login-button m-btn m-btn--pill m-btn--custom m-btn--air m-login__btn m-login__btn--primary">Sign In</button>
-                            {{--</a>--}}
+                            <a href="{{ route('admin.forgetPassword.index') }}" id="" class="m-link" style="color: #000000;">
+                                Forgot Password ?
+                            </a>
+                            <button type="submit" id="" class="btn login-button m-btn m-btn--pill m-btn--custom m-btn--air m-login__btn m-login__btn--primary">Sign In</button>
                         </div>
 
                         <!--end::Action-->

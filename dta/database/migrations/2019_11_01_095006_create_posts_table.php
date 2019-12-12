@@ -19,6 +19,7 @@ class CreatePostsTable extends Migration
             $table->string('lead_code')->nullable();
             $table->integer('from_id')->nullable();
             $table->longText('to_id')->nullable();
+            $table->longText('lead_cpl')->nullable();
             $table->tinyInteger('visited')->default(\App\Models\Post::Not_Visited)->comment('0:Not_Visited, 1:Visited	');
             $table->tinyInteger('status')->default(\App\Models\Post::ACTIVE)->comment('0: In_Active, 1: Active');
 

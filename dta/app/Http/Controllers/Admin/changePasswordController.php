@@ -20,12 +20,12 @@ class changePasswordController extends Controller
 
     public function edit($id,Request $request)
     {
-//        dd($request->all());
         $this->validate($request,[
             'current_password' => 'required',
-            'new_password' => 'required',
+            'new_password' => ['required', 'min:8', 'regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!$#%]).*$/', 'confirmed'],
             'confirm_password' => 'required',
         ]);
+
         $user = User::find(auth()->user()->id);
         if(!Hash::check($request->get('current_password'), $user->password)) {
             return redirect(route('admin.changePassword.index'))->with(['error' => 'The current password does not match !']);

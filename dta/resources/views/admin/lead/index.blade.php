@@ -246,7 +246,7 @@
 
             $leadkey = $('#leadkey').val();
             $leadid = $('#leadid').val();
-
+            showLoading();
             $.ajax({
                 type: "POST",
                 url:'{{ route('admin.lead.sendMail')}}',
@@ -262,13 +262,16 @@
                     // console.log(data);
                     // console.log(data.adminUser.user.roles[0].name);
                     if(data.status == true){
+                        hideLoading();
                         swal({
                             title: "Success!",
                             text: "Email sent successfully",
                             type: 'success'
                         });
+
                     }
                     else{
+                        hideLoading();
                         swal({
                             title: "Oops...!",
                             text: "something went wrong...",
@@ -277,6 +280,7 @@
                     }
                 },error:function()
                 {
+                    hideLoading();
                     swal({
                         title: "Oops...!",
                         text: "something went wrong...",

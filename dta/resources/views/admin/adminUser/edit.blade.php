@@ -84,7 +84,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group m-form__group @if ($errors->has('name')) has-danger @endif">
                                             <label for="name">Name</label>
-                                            <input type="text" name="name" class="form-control m-input" id="name" value="{{ $user->name }}" placeholder="Enter First Name" >
+                                            <input type="text" name="name" class="form-control m-input" id="name" value="{{ $user->name }}" placeholder="Enter Name" >
                                             @if ($errors->has('name'))
                                                 <h6 class="m--font-danger m--margin-top-5">{{ $errors->first('name') }}</h6>
                                             @endif
@@ -172,7 +172,7 @@
                                                                 {{--{{ (is_array(old('where_find')) && in_array($whereFind->id, old('where_find'))) ? ' checked' : '' }}--}}
                                                                 <label class="m-checkbox m-checkbox--check-bold m-checkbox--state-primary">
                                                                     <input type="hidden" name="permission[{{ $permission->module_id }}][view]"  value="0" >
-                                                                    <input type="checkbox" class="checkboxAll{{ $module->id }}" id="checkBoxView" name="permission[{{ $permission->module_id }}][view]"  value="{{ $permission->view ? '0' : '1'}}" {{ $permission->view ? ' checked' : '' }} >
+                                                                    <input type="checkbox" class="checkboxAll{{ $module->id }}" id="checkBoxView" name="permission[{{ $permission->module_id }}][view]"  value="{{ $permission->view ? '0' : '1'}}"   >
                                                                     <span></span>
                                                                 </label>
                                                             </div>

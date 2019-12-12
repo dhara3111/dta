@@ -19,6 +19,8 @@ use DB;
 use Keygen\Keygen;
 use PHPMailer\PHPMailer\PHPMailer;
 use Yajra\DataTables\DataTables;
+use Stripe;
+use Stripe\Error;
 
 class AdminUserController extends Controller
 {
@@ -151,6 +153,7 @@ class AdminUserController extends Controller
         $email = $request->email;
 
         $userCheck  = User::whereEmail($email)->exists();
+
         if ($userCheck) {
 
             $today = new \DateTime();
@@ -167,7 +170,7 @@ class AdminUserController extends Controller
 
             $name = $user->name;
 
-            $resetPasswordLink = route('admin.resetPassword.index',['key'=>encrypt($token),'id'=>$user->id,'userId' => $userId,'module' => $module]);
+            $resetPasswordLink = route('admin.resetPassword.index',['key'=>encrypt($token),'id'=>$user->id]);
 
 
             // $this->dispatch(new ForgetPasswordEmail($email,$name, $resetPasswordLink));

@@ -13,7 +13,7 @@ class ResetPasswordController extends Controller
     /*----------------------------------------------------------------------------------
              This method use for display Reset Password Form
      ------------------------------------------------------------------------------------*/
-    public function index($key, $id,$userid,$module){
+    public function index($key, $id){
 
         // decrypt and get params from hash
         $token = decrypt($key);
@@ -34,8 +34,7 @@ class ResetPasswordController extends Controller
                 return view('admin.resetPassword.index',[
                     'key' => $key,
                     'id' => $id,
-                    'userId' => $userid,
-                    'module' => $module,
+
                 ]);
 //            }
 //            else

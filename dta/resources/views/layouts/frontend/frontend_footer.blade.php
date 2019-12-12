@@ -50,7 +50,6 @@
 <!--COPY RIGHTS-->
 <section class="copy">
     <div class="container">
-        <p >© 2019 <lable style="color:#ff4702;">{{$otherDetail->website_name}}</lable>. All Rights Reserved By <a href="http://dwarkeshit.in/" class="m-link" style="color:#fd0007;" target="_">Dwarkesh Business Solution</a></p>
-        {{--<p>copyrights © 2019 {{$otherDetail->website_name}}. </p>--}}
+        <p >© 2019 <lable style="color:#da2129;">{{$otherDetail->website_name}}</lable>.</p>
     </div>
 </section>

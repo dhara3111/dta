@@ -8,9 +8,9 @@
     <div class="m-container m-container--fluid m-container--full-height m-page__container">
         <div class="m-stack m-stack--flex-tablet-and-mobile m-stack--ver m-stack--desktop">
             <div class="m-stack__item m-stack__item--left m-stack__item--middle m-stack__item--last">
-                        <span class="m-footer__copyright">
-                            2019 &copy; <label style="color:#ff4702;">{{$otherDetail->website_name}}</label>  All Rights Reserved By <a href="http://dwarkeshit.in/" class="m-link" style="color:#fd0007;" target="_">Dwarkesh Business Solution</a>
-                        </span>
+                <span class="m-footer__copyright">
+                    2019 &copy; <label style="color:#da2129;">{{$otherDetail->website_name}}</label>
+                </span>
             </div>
         </div>
     </div>

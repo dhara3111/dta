@@ -14,5 +14,8 @@ class Post extends Model
         'lead_code',
         'from_id',
         'to_id',
+        'lead_cpl',
+        'visited',
+        'status',
     ];
 }

@@ -45,6 +45,10 @@ return [
             'driver' => 'passport',
             'provider' => 'users',
         ],
+        'advertiser' => [
+            'driver' => 'session',
+            'provider' => 'advertisers',
+        ],
     ],
 
     /*
@@ -71,10 +75,11 @@ return [
             'table' => 'users',
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+         'advertisers' => [
+             'driver' => 'database',
+             'model' => App\Models\Advertiser::class,
+             'table' => 'advertisers',
+         ],
     ],
 
     /*
@@ -95,6 +100,11 @@ return [
     'passwords' => [
         'users' => [
             'provider' => 'users',
+            'table' => 'password_resets',
+            'expire' => 60,
+        ],
+        'advertisers' => [
+            'provider' => 'advertisers',
             'table' => 'password_resets',
             'expire' => 60,
         ],

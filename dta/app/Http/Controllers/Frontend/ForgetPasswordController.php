@@ -61,7 +61,7 @@ class ForgetPasswordController extends Controller
                 $mail->Port       = 587;                                    // TCP port to connect to
 
                 //Recipients
-                $mail->setFrom('no-reply@gglfdreambharat.org.in', 'Mailer');
+                $mail->setFrom('no-reply@gglfdreambharat.org.in', 'Lawclimb');
                 $mail->addAddress($email, $name);     // Add a recipient
 //                $mail->addAddress('anant@dwarkeshit.com');               // Name is optional
 

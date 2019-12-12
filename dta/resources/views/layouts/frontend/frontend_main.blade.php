@@ -11,6 +11,9 @@
     @yield('meta')
 
     @include('layouts.frontend.frontend_header_script')
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
 
     <style>
         .tz2-form-com form {
@@ -18,10 +21,66 @@
             background: #eaedef;
             margin-top: 5px !important;
         }
-        .tz-lma {
 
-            background: #eaedef!important ;
-            padding-left: 12px !important;
+        /* define a fixed width for the entire menu */
+        .navigation {
+            width: 300px;
+        }
+
+        /* reset our lists to remove bullet points and padding */
+        .mainmenu, .submenu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* make ALL links (main and submenu) have padding and background color */
+        .mainmenu a {
+            display: block;
+            /*background-color: #CCC;*/
+            text-decoration: none;
+            padding: 10px;
+            color: #000;
+        }
+
+        /* add hover behaviour */
+        .mainmenu a:hover {
+            background-color: #C5C5C5;
+        }
+
+
+        /* when hovering over a .mainmenu item,
+          display the submenu inside it.
+          we're changing the submenu's max-height from 0 to 200px;
+        */
+
+        .mainmenu li:hover .submenu {
+            display: block;
+            max-height: 200px;
+        }
+
+        /*
+          we now overwrite the background-color for .submenu links only.
+          CSS reads down the page, so code at the bottom will overwrite the code at the top.
+        */
+
+        .submenu a {
+            /*background-color: #999;*/
+            margin-left: 30px;
+        }
+
+        /* hover behaviour for links inside .submenu */
+        .submenu a:hover {
+            background-color: red;
+        }
+
+        /* this is the initial state of all submenus.
+          we set it to max-height: 0, and hide the overflowed content.
+        */
+        .submenu {
+            overflow: hidden;
+            max-height: 0;
+            -webkit-transition: all 0.5s ease-out;
         }
 
     </style>

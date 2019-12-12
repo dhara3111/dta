@@ -3,8 +3,7 @@
 namespace App\Http;
 
 use App\Http\Middleware\AdminAuth;
-use App\Http\Middleware\EmployeeAuth;
-use App\Http\Middleware\EmployerAuth;
+use App\Http\Middleware\AdvertiserAuth;
 use App\Http\Middleware\FrontAuth;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
@@ -68,6 +67,6 @@ class Kernel extends HttpKernel
         'ability' => \Zizaco\Entrust\Middleware\EntrustAbility::class,
         'AdminAuth' => AdminAuth::class,
         'FrontAuth' => FrontAuth::class,
-
+        'AdvertiserAuth' => AdvertiserAuth::class,
     ];
 }

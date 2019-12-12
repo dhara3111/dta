@@ -24,7 +24,7 @@ class User extends Authenticatable
 
     const UNSET = 0,  SET = 1;
     const  ACTIVE = 1, IN_ACTIVE = 0;
-    const  Developer = 0, SuperAdmin = 1, Admin = 2, Attorney = 3;
+    const  Developer = 0, SuperAdmin = 1, Admin = 2, Attorney = 3, Advertiser = 4;
 
 
     public function restore()
@@ -49,6 +49,7 @@ class User extends Authenticatable
         'zipcode',
         'expertize_in',
         'service_in__city',
+        'title',
         'password',
         'keystring',
         'api_secret',

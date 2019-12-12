@@ -68,7 +68,7 @@ class ForgetPasswordController extends Controller
                 $mail->Port       = 587;                                    // TCP port to connect to
 
                 //Recipients
-                $mail->setFrom('no-reply@gglfdreambharat.org.in', 'Mailer');
+                $mail->setFrom('no-reply@gglfdreambharat.org.in', 'Lawclimb');
                 $mail->addAddress($email, $name);     // Add a recipient
 //                $mail->addAddress('anant@dwarkeshit.com');               // Name is optional
 
@@ -170,9 +170,7 @@ class ForgetPasswordController extends Controller
                                                                         <tr>
                                                                             <td align="center" valign="top" style="padding: 36px 24px;">
                                                                                 <a href="'.$resetPasswordLink.'" style="display: inline-block;">
-                                                                                    <h1 style="margin: 0; font-size: 32px; font-weight: 700;align:center;color:blue;">
-                                                                                        Direct To Attorney
-                                                                                    </h1>
+                                                                                     <img src="'.asset('ourLogoImages/20191131272611210978.png').'" style="padding-top:30%;width: 100%;" >
                                                                                 </a>
                                                                             </td>
                                                                         </tr>

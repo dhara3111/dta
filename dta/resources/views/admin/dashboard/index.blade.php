@@ -100,11 +100,6 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-xl-12">
-                    {{--<img alt="" src="{{asset('ourLogoImages/'.$otherDetail->image)}}" height="50%" width="100%"/>--}}
-                </div>
-            </div>
         </div>
     </div>
 

@@ -41,6 +41,8 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->mapFrontendRoutes();
 
+        $this->mapAdvertiserRoutes();
+
         //
     }
 
@@ -79,5 +81,12 @@ class RouteServiceProvider extends ServiceProvider
         Route::middleware('web')
             ->namespace($this->namespace)
             ->group(base_path('routes/frontend.php'));
+    }
+
+    protected function mapAdvertiserRoutes()
+    {
+        Route::middleware('web')
+            ->namespace($this->namespace)
+            ->group(base_path('routes/advertiser.php'));
     }
 }

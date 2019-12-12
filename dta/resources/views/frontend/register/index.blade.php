@@ -38,12 +38,16 @@
         <div class="container">
             <div class="row">
                 <div class="v3-menu">
-                    <div class="v3-m-2">
-                        <a href="{{route('frontend.home.index')}}"><span class="color_fff">Direct To Attorney</span></a>
+                    <div class="v3-m-1">
+                        <a href="{{route('frontend.home.index')}}">
+                            <span class="color_fff">
+                                <img alt="" src="{{asset('ourLogoImages/'.$otherDetail->image)}}" style="margin-top: -8px;"/>
+                            </span>
+                        </a>
                     </div>
-
+                    <div class="v3-m-2">
+                    </div>
                 </div>
-
             </div>
         </div>
     </div>
@@ -54,14 +58,12 @@
             <div class="row">
                 <div class="v3-mob-menu">
                     <div class="v3-mob-m-1">
-                        <a href="index.php"><span class="color_fff">Direct To Attorney</span></a>
+                        <a href="{{route('frontend.home.index')}}"><span class="color_fff"><img alt="" src="{{asset('ourLogoImages/'.$otherDetail->image)}}" style="margin-top: -8px;"/></span></a>
                     </div>
-
                 </div>
             </div>
         </div>
     </div>
-
 </section>
 
 <section class="tz-login">
@@ -102,24 +104,12 @@
             </div>
             <div class="row">
                 <div class="input-field col s6">
-                    <div class="select-wrapper">
-                        <select class="initialized select2" name="state" id="state">
-                            <option value="">Select State</option>
-                            <option value="Gujarat">Gujarat</option>
-                            <option value="Maharashtra">Maharashtra</option>
-                        </select>
-                    </div>
+                    <input type="text" class="validate" name="state" id="state" value="{{old('state')}}">
+                    <label>State</label>
                 </div>
                 <div class="input-field col s6">
-                    <div class="select-wrapper">
-                        <select class="initialized select2" name="city" id="city">
-                            <option value="">Select City</option>
-                            <option value="Vadodara">Vadodara</option>
-                            <option value="Surat">Surat</option>
-                            <option value="Porbandar">Porbandar</option>
-                            <option value="Rajkot">Rajkot</option>
-                        </select>
-                    </div>
+                    <input type="text" class="validate" name="city" id="city" value="{{old('city')}}">
+                    <label>City</label>
                 </div>
             </div>
             <div class="row">
@@ -215,7 +205,7 @@
 <!--COPY RIGHTS-->
 <section class="copy">
     <div class="container">
-        <p>© 2019 <lable style="color:#ff4702;">{{$otherDetail->website_name}}</lable>. All Rights Reserved By <a href="http://dwarkeshit.in/" class="m-link" style="color:#fd0007;" target="_">Dwarkesh Business Solution</a></p>
+         <p>© 2019 <lable style="color:#da2129;">{{$otherDetail->website_name}}</lable></p>
     </div>
 </section>
 

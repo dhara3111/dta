@@ -35,9 +35,8 @@ class LoginController extends Controller
         {
             if(Hash::check($request->get('password'),$user->password) && ($user->type == 3))
             {
-
                 \Auth::login($user);
-                return redirect(route('frontend.home.index'));
+                return redirect(route('frontend.assignLead.index'));
             }
         }
         return redirect(route('frontend.login.index'))->with(['error' => 'Invalid credential please try again !']);

@@ -32,6 +32,18 @@
 
     <!--begin::Favicon Icon -->
     <link rel="shortcut icon" href="{{asset('ourLogoImages/'.$otherDetail->favicon)}}" />
+    <style>
+        .login-button {
+            color: #fff;
+            background-color: #da2129 ;
+            border-color: #da2129 ;
+        }
+        .login-button:hover {
+            color: #fff;
+            background-color: #000000;
+            border-color: #000000;
+        }
+    </style>
 </head>
 
 <!-- end::Head -->
@@ -45,9 +57,9 @@
         <div class="m-grid__item   m-grid__item--order-tablet-and-mobile-2  m-grid m-grid--hor m-login__aside " >
             <div class="m-grid__item">
                 <div class="m-login__logo text-center">
-                    <a href="javascript:void(0)">
+
                         <img src="{{asset('ourLogoImages/'.$otherDetail->image)}}" style="padding-top:30%;width: 100%;" >
-                    </a>
+
                     <h1 style="color:white;font-size:50px;">Direct To Attorney</h1>
                 </div>
             </div>
@@ -84,7 +96,7 @@
                     </div>
 
                     <!--begin::Form-->
-                    <form id="resetPasswordForm" class="m-login__form m-form" method="GET" action="{{route('admin.resetPassword.reset',['key'=>$key,'id'=>$id,'userId' => $userId,'module' => $module,])}}">
+                    <form id="resetPasswordForm" class="m-login__form m-form" method="GET" action="{{route('admin.resetPassword.reset',['key'=>$key,'id'=>$id])}}">
                         @csrf
 
                         @if(Session::has('success'))
@@ -133,7 +145,7 @@
                             {{--</a>--}}
                             <a href="{{ route('admin.login.index') }}" id="" class="m-link" style="color: #4c4c4c;">< Back To Login</a>
                             {{--<a href="#">--}}
-                            <button type="submit" id="" class="btn btn-primary m-btn m-btn--pill m-btn--custom m-btn--air m-login__btn m-login__btn--primary">Submit</button>
+                            <button type="submit" id="" class="btn login-button m-btn m-btn--pill m-btn--custom m-btn--air m-login__btn m-login__btn--primary">Submit</button>
                             {{--</a>--}}
                         </div>
 

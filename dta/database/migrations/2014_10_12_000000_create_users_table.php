@@ -26,6 +26,7 @@ class CreateUsersTable extends Migration
             $table->string('zipcode')->nullable();
             $table->string('expertize_in')->nullable();
             $table->string('service_in__city')->nullable();
+            $table->string('title')->nullable();
             $table->string('password');
             $table->string('keystring');
             $table->string('api_secret');

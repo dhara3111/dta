@@ -32,6 +32,18 @@
 
     <!--begin::Favicon Icon -->
     <link rel="shortcut icon" href="{{asset('ourLogoImages/'.$otherDetail->favicon)}}" />
+    <style>
+        .login-button {
+            color: #fff;
+            background-color: #da2129 ;
+            border-color: #da2129 ;
+        }
+        .login-button:hover {
+            color: #fff;
+            background-color: #000000;
+            border-color: #000000;
+        }
+    </style>
 </head>
 
 <!-- end::Head -->
@@ -114,7 +126,7 @@
                         <!--begin::Action-->
                         <div class="m-login__action">
                             <a href="{{ route('admin.login.index') }}" id="" class="m-link" style="color: #4c4c4c;">< Back To Login </a>
-                            <button type="submit" id="" class="btn btn-primary m-btn m-btn--pill m-btn--custom m-btn--air m-login__btn m-login__btn--primary">Send</button>
+                            <button type="submit" id="" class="btn login-button m-btn m-btn--pill m-btn--custom m-btn--air m-login__btn m-login__btn--primary">Send</button>
                         </div>
 
                         <!--end::Action-->

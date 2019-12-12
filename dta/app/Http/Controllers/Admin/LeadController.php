@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use PHPMailer\PHPMailer\PHPMailer;
 use SendGrid\Mail\Mail;
 use Yajra\DataTables\DataTables;
 class LeadController extends Controller
@@ -83,7 +84,7 @@ class LeadController extends Controller
                     return $btn;
                 })
                 ->addColumn('sellable', function($row){
-                    if($row->sellable == 'Yes'){
+                    if($row->sellable == '1'){
 
                         return '<img src="'.asset('assets/app/media/img/icons/status-green.png').'">';
                     }
@@ -92,7 +93,7 @@ class LeadController extends Controller
                     }
                 })
                 ->addColumn('sold', function($row){
-                    if($row->sold == 'Yes'){
+                    if($row->sold == '1'){
 
                         return '<img src="'.asset('assets/app/media/img/icons/status-green.png').'">';
                     }
@@ -101,7 +102,7 @@ class LeadController extends Controller
                     }
                 })
                 ->addColumn('paid', function($row){
-                    if($row->paid == 'Yes'){
+                    if($row->paid == '1'){
 
                         return '<img src="'.asset('assets/app/media/img/icons/status-green.png').'">';
                     }
@@ -207,18 +208,130 @@ class LeadController extends Controller
 
     public function sendMail(Request $request){
 
-        $request->attornies=array("0" => 'anantp27@gmail.com');
+        $mail = new PHPMailer(true);
 
-        $lead_data=Lead::where('id',$request->leadid)->first();
-        $types=Type::where('key',$lead_data->lp_campaign_key)->first();
+        try {
+            //Server settings
+            $mail->SMTPDebug = false;                                       // Enable verbose debug output
+            $mail->isSMTP();                                            // Set mailer to use SMTP
+            $mail->Host       = 'mail.lawclimb.com';  // Specify main and backup SMTP servers
+            $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
+            $mail->Username   = 'admin@lawclimb.com';                     // SMTP username
+            $mail->Password   = '32Jager32';                               // SMTP password
+            $mail->SMTPSecure = 'tls';                                  // Enable TLS encryption, `ssl` also accepted
+            $mail->Port       = 587;                                    // TCP port to connect to
 
-        $API_KEY = "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";
-            $email = new \SendGrid\Mail\Mail();
-            $email->setSubject($lead_data->first_name." ".$lead_data->last_name." needs ".ucfirst($types->name)." in ".$lead_data->city.",".$lead_data->state);
-            $email->setFrom("sales@lawclimb.com", "Lawclimb");
+            $lead_data=Lead::where('id',$request->leadid)->first();
+            $types=Type::where('key',$lead_data->lp_campaign_key)->first();
+
+
             foreach ($request->attornies as $attorney){
-                $user = User::whereEmail($attorney)->first();
-                $email->addTo($attorney, $attorney);
+
+                $today = new \DateTime();
+                $token = str_random(64);
+
+                $user  = User::whereEmail($attorney)->whereType('3')->first();
+                $user->access_token = $token;
+                $user->access_token_sent_at = $today;
+                $user->save();
+
+                $path=route('frontend.editProfile.index',['key'=>encrypt($token),'id'=>$user->id]);
+
+                //Recipients
+                $mail->setFrom('admin@lawclimb.com', 'Lawclimb');
+                $mail->addAddress($attorney,$user->name );     // Add a recipient
+
+                $mail->isHTML(true);                                  // Set email format to HTML
+                $mail->Subject = $lead_data->first_name." ".$lead_data->last_name." needs ".ucfirst($types->name)." in ".$lead_data->city.",".$lead_data->state;
+                $mail->Body = 'hi';
+                //                $mail->Body = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+//<html xmlns="http://www.w3.org/1999/xhtml" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+//<head>
+//<meta name="viewport" content="width=device-width" />
+//<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+//<title>Your Title Goes Here</title>
+//
+//
+//<style type="text/css">
+//img {
+//max-width: 100%;
+//}
+//body {
+//-webkit-font-smoothing: antialiased; -webkit-text-size-adjust: none; width: 100% !important; height: 100%; line-height: 1.6em;
+//}
+//body {
+//background-color: #f6f6f6;
+//}
+//@media only screen and (max-width: 640px) {
+//  body {
+//    padding: 0 !important;
+//  }
+//  h1 {
+//    font-weight: 800 !important; margin: 20px 0 5px !important;
+//  }
+//  h2 {
+//    font-weight: 800 !important; margin: 20px 0 5px !important;
+//  }
+//  h3 {
+//    font-weight: 800 !important; margin: 20px 0 5px !important;
+//  }
+//  h4 {
+//    font-weight: 800 !important; margin: 20px 0 5px !important;
+//  }
+//  h1 {
+//    font-size: 22px !important;
+//  }
+//  h2 {
+//    font-size: 18px !important;
+//  }
+//  h3 {
+//    font-size: 16px !important;
+//  }
+//  .container {
+//    padding: 0 !important; width: 100% !important;
+//  }
+//  .content {
+//    padding: 0 !important;
+//  }
+//  .content-wrap {
+//    padding: 10px !important;
+//  }
+//  .invoice {
+//    width: 100% !important;
+//  }
+//}
+//</style>
+//</head>
+//
+//<body itemscope itemtype="http://schema.org/EmailMessage" style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: none; width: 100% !important; height: 100%; line-height: 1.6em; background-color: #f6f6f6; margin: 0;" bgcolor="#f6f6f6">
+//
+//<table class="body-wrap" style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; width: 100%; background-color: #f6f6f6; margin: 0;" bgcolor="#f6f6f6"><tr style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;"><td style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0;" valign="top"></td>
+//    <td class="container" width="600" style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; display: block !important; max-width: 600px !important; clear: both !important; margin: 0 auto;" valign="top">
+//      <div class="content" style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; max-width: 600px; display: block; margin: 0 auto; padding: 20px;">
+//        <table class="main" width="100%" cellpadding="0" cellspacing="0" style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; border-radius: 3px; background-color: #fff; margin: 0; border: 1px solid #e9e9e9;" bgcolor="#fff"><tr style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;"><td class="alert alert-warning" style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 16px; vertical-align: top; color: #fff; font-weight: 500; text-align: center; border-radius: 3px 3px 0 0; background-color: #36404e; margin: 0; padding: 20px;" align="center" bgcolor="#2f353f" valign="top">
+//              '.$lead_data->first_name." ".$lead_data->last_name." needs ".ucfirst($types->name)." in ".$lead_data->city.",".$lead_data->state.'
+//            </td>
+//          </tr><tr style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;"><td class="content-wrap" style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 20px;" valign="top">
+//              <table width="100%" cellpadding="0" cellspacing="0" style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;"><tr style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;"><td class="content-block" style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">
+//                    '.$lead_data->city.",".$lead_data->state." ".$lead_data->zipcode.'
+//                  </td>
+//                </tr><tr style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;"><td class="content-block" style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">
+//                    <a href="'.$path.'" class="btn-primary" style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; color: #FFF; text-decoration: none; line-height: 2em; font-weight: bold; text-align: center; cursor: pointer; display: inline-block; border-radius: 5px; text-transform: capitalize; background-color: #f5707a; margin: 0; border-color: #f5707a; border-style: solid; border-width: 10px 20px;">View Job</a>
+//                  </td>
+//                </tr><tr style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;"><td class="content-block" style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">
+//                    Thanks for choosing Direct To Attorney.
+//                  </td>
+//                </tr></table></td>
+//          </tr></table><div class="footer" style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; width: 100%; clear: both; color: #999; margin: 0; padding: 20px;">
+//          <table width="100%" style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;"><tr style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;"><td class="aligncenter content-block" style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 12px; vertical-align: top; color: #999; text-align: center; margin: 0; padding: 0 0 20px;" align="center" valign="top"><a href="#" style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 12px; color: #999; text-decoration: underline; margin: 0;">Unsubscribe</a> from these alerts.</td>
+//            </tr></table></div></div>
+//    </td>
+//    <td style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0;" valign="top"></td>
+//  </tr></table></body>
+//</html>';
+
+                $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+                $mail->send();
 
                 $user_id=Auth::user()->id;
                 $attorney_id=User::where('email',$attorney)->first();
@@ -229,107 +342,148 @@ class LeadController extends Controller
                     'lead_code' => $request->leadkey,
                     'from_id' => $user_id,
                     'to_id' => $attorney_id->id,
+//                    'lead_cpl' => $attorney_id->id,
                 ]);
 
             }
-            $email->addContent(
-                'text/html', '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
-<head>
-<meta name="viewport" content="width=device-width" />
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Your Title Goes Here</title>
 
-
-<style type="text/css">
-img {
-max-width: 100%;
-}
-body {
--webkit-font-smoothing: antialiased; -webkit-text-size-adjust: none; width: 100% !important; height: 100%; line-height: 1.6em;
-}
-body {
-background-color: #f6f6f6;
-}
-@media only screen and (max-width: 640px) {
-  body {
-    padding: 0 !important;
-  }
-  h1 {
-    font-weight: 800 !important; margin: 20px 0 5px !important;
-  }
-  h2 {
-    font-weight: 800 !important; margin: 20px 0 5px !important;
-  }
-  h3 {
-    font-weight: 800 !important; margin: 20px 0 5px !important;
-  }
-  h4 {
-    font-weight: 800 !important; margin: 20px 0 5px !important;
-  }
-  h1 {
-    font-size: 22px !important;
-  }
-  h2 {
-    font-size: 18px !important;
-  }
-  h3 {
-    font-size: 16px !important;
-  }
-  .container {
-    padding: 0 !important; width: 100% !important;
-  }
-  .content {
-    padding: 0 !important;
-  }
-  .content-wrap {
-    padding: 10px !important;
-  }
-  .invoice {
-    width: 100% !important;
-  }
-}
-</style>
-</head>
-
-<body itemscope itemtype="http://schema.org/EmailMessage" style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: none; width: 100% !important; height: 100%; line-height: 1.6em; background-color: #f6f6f6; margin: 0;" bgcolor="#f6f6f6">
-
-<table class="body-wrap" style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; width: 100%; background-color: #f6f6f6; margin: 0;" bgcolor="#f6f6f6"><tr style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;"><td style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0;" valign="top"></td>
-    <td class="container" width="600" style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; display: block !important; max-width: 600px !important; clear: both !important; margin: 0 auto;" valign="top">
-      <div class="content" style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; max-width: 600px; display: block; margin: 0 auto; padding: 20px;">
-        <table class="main" width="100%" cellpadding="0" cellspacing="0" style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; border-radius: 3px; background-color: #fff; margin: 0; border: 1px solid #e9e9e9;" bgcolor="#fff"><tr style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;"><td class="alert alert-warning" style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 16px; vertical-align: top; color: #fff; font-weight: 500; text-align: center; border-radius: 3px 3px 0 0; background-color: #36404e; margin: 0; padding: 20px;" align="center" bgcolor="#2f353f" valign="top">
-              '.$lead_data->first_name." ".$lead_data->last_name." needs ".ucfirst($types->name)." in ".$lead_data->city.",".$lead_data->state.'
-            </td>
-          </tr><tr style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;"><td class="content-wrap" style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 20px;" valign="top">
-              <table width="100%" cellpadding="0" cellspacing="0" style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;"><tr style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;"><td class="content-block" style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">
-                    '.$lead_data->city.",".$lead_data->state." ".$lead_data->zipcode.'
-                  </td>
-                </tr><tr style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;"><td class="content-block" style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">
-                    <a href="https://leadcallz.leadspedia.net/advertiser/signup/" class="btn-primary" style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; color: #FFF; text-decoration: none; line-height: 2em; font-weight: bold; text-align: center; cursor: pointer; display: inline-block; border-radius: 5px; text-transform: capitalize; background-color: #f5707a; margin: 0; border-color: #f5707a; border-style: solid; border-width: 10px 20px;">View Job</a>
-                  </td>
-                </tr><tr style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;"><td class="content-block" style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">
-                    Thanks for choosing Direct To Attorney.
-                  </td>
-                </tr></table></td>
-          </tr></table><div class="footer" style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; width: 100%; clear: both; color: #999; margin: 0; padding: 20px;">
-          <table width="100%" style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;"><tr style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;"><td class="aligncenter content-block" style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 12px; vertical-align: top; color: #999; text-align: center; margin: 0; padding: 0 0 20px;" align="center" valign="top"><a href="#" style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 12px; color: #999; text-decoration: underline; margin: 0;">Unsubscribe</a> from these alerts.</td>
-            </tr></table></div></div>
-    </td>
-    <td style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0;" valign="top"></td>
-  </tr></table></body>
-</html>');
-            $sendgrid = new \SendGrid($API_KEY);
-            try {
-                $response = $sendgrid->send($email);
-
-                return response()->json([
+            return response()->json([
                     'status' => true
                 ]);
-            } catch (Exception $e) {
-                return response()->json([
+//            echo 'Message has been sent';
+        } catch (Exception $e) {
+
+            return response()->json([
                     'status' => false
                 ]);
-            }
+//            echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+        }
+
+//
+//
+//        $request->attornies=array("0" => 'anantp27@gmail.com');
+//
+//        $lead_data=Lead::where('id',$request->leadid)->first();
+//        $types=Type::where('key',$lead_data->lp_campaign_key)->first();
+//
+//        $API_KEY = "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";
+//            $email = new \SendGrid\Mail\Mail();
+//            $email->setSubject($lead_data->first_name." ".$lead_data->last_name." needs ".ucfirst($types->name)." in ".$lead_data->city.",".$lead_data->state);
+//            $email->setFrom("sales@lawclimb.com", "Lawclimb");
+//            foreach ($request->attornies as $attorney){
+//                $user = User::whereEmail($attorney)->first();
+//                $email->addTo($attorney, $attorney);
+//
+//                $user_id=Auth::user()->id;
+//                $attorney_id=User::where('email',$attorney)->first();
+//
+//                $postModel = new Post();
+//                $post = $postModel->create([
+//                    'lead_id' => $request->leadid,
+//                    'lead_code' => $request->leadkey,
+//                    'from_id' => $user_id,
+//                    'to_id' => $attorney_id->id,
+//                ]);
+//
+//            }
+//            $email->addContent(
+//                'text/html', '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+//<html xmlns="http://www.w3.org/1999/xhtml" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+//<head>
+//<meta name="viewport" content="width=device-width" />
+//<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+//<title>Your Title Goes Here</title>
+//
+//
+//<style type="text/css">
+//img {
+//max-width: 100%;
+//}
+//body {
+//-webkit-font-smoothing: antialiased; -webkit-text-size-adjust: none; width: 100% !important; height: 100%; line-height: 1.6em;
+//}
+//body {
+//background-color: #f6f6f6;
+//}
+//@media only screen and (max-width: 640px) {
+//  body {
+//    padding: 0 !important;
+//  }
+//  h1 {
+//    font-weight: 800 !important; margin: 20px 0 5px !important;
+//  }
+//  h2 {
+//    font-weight: 800 !important; margin: 20px 0 5px !important;
+//  }
+//  h3 {
+//    font-weight: 800 !important; margin: 20px 0 5px !important;
+//  }
+//  h4 {
+//    font-weight: 800 !important; margin: 20px 0 5px !important;
+//  }
+//  h1 {
+//    font-size: 22px !important;
+//  }
+//  h2 {
+//    font-size: 18px !important;
+//  }
+//  h3 {
+//    font-size: 16px !important;
+//  }
+//  .container {
+//    padding: 0 !important; width: 100% !important;
+//  }
+//  .content {
+//    padding: 0 !important;
+//  }
+//  .content-wrap {
+//    padding: 10px !important;
+//  }
+//  .invoice {
+//    width: 100% !important;
+//  }
+//}
+//</style>
+//</head>
+//
+//<body itemscope itemtype="http://schema.org/EmailMessage" style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: none; width: 100% !important; height: 100%; line-height: 1.6em; background-color: #f6f6f6; margin: 0;" bgcolor="#f6f6f6">
+//
+//<table class="body-wrap" style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; width: 100%; background-color: #f6f6f6; margin: 0;" bgcolor="#f6f6f6"><tr style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;"><td style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0;" valign="top"></td>
+//    <td class="container" width="600" style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; display: block !important; max-width: 600px !important; clear: both !important; margin: 0 auto;" valign="top">
+//      <div class="content" style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; max-width: 600px; display: block; margin: 0 auto; padding: 20px;">
+//        <table class="main" width="100%" cellpadding="0" cellspacing="0" style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; border-radius: 3px; background-color: #fff; margin: 0; border: 1px solid #e9e9e9;" bgcolor="#fff"><tr style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;"><td class="alert alert-warning" style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 16px; vertical-align: top; color: #fff; font-weight: 500; text-align: center; border-radius: 3px 3px 0 0; background-color: #36404e; margin: 0; padding: 20px;" align="center" bgcolor="#2f353f" valign="top">
+//              '.$lead_data->first_name." ".$lead_data->last_name." needs ".ucfirst($types->name)." in ".$lead_data->city.",".$lead_data->state.'
+//            </td>
+//          </tr><tr style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;"><td class="content-wrap" style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 20px;" valign="top">
+//              <table width="100%" cellpadding="0" cellspacing="0" style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;"><tr style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;"><td class="content-block" style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">
+//                    '.$lead_data->city.",".$lead_data->state." ".$lead_data->zipcode.'
+//                  </td>
+//                </tr><tr style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;"><td class="content-block" style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">
+//                    <a href="https://leadcallz.leadspedia.net/advertiser/signup/" class="btn-primary" style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; color: #FFF; text-decoration: none; line-height: 2em; font-weight: bold; text-align: center; cursor: pointer; display: inline-block; border-radius: 5px; text-transform: capitalize; background-color: #f5707a; margin: 0; border-color: #f5707a; border-style: solid; border-width: 10px 20px;">View Job</a>
+//                  </td>
+//                </tr><tr style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;"><td class="content-block" style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">
+//                    Thanks for choosing Direct To Attorney.
+//                  </td>
+//                </tr></table></td>
+//          </tr></table><div class="footer" style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; width: 100%; clear: both; color: #999; margin: 0; padding: 20px;">
+//          <table width="100%" style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;"><tr style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;"><td class="aligncenter content-block" style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 12px; vertical-align: top; color: #999; text-align: center; margin: 0; padding: 0 0 20px;" align="center" valign="top"><a href="#" style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 12px; color: #999; text-decoration: underline; margin: 0;">Unsubscribe</a> from these alerts.</td>
+//            </tr></table></div></div>
+//    </td>
+//    <td style="font-family: \'Helvetica Neue\',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0;" valign="top"></td>
+//  </tr></table></body>
+//</html>');
+//            $sendgrid = new \SendGrid($API_KEY);
+//            try {
+//                $response = $sendgrid->send($email);
+//
+//                return response()->json([
+//                    'status' => true
+//                ]);
+//            } catch (Exception $e) {
+//                return response()->json([
+//                    'status' => false
+//                ]);
+//            }
 
     }
 

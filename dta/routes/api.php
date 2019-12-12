@@ -19,9 +19,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::group(['namespace' => 'Api','prefix' => 'auth'], function () {
 
-    Route::post('login', 'AuthController@login');
+    Route::get('index', 'AuthController@index');
 
-    Route::post('lead', 'AuthController@lead');
+    Route::post('pass-lead-data', 'AuthController@leadData');
 
 //    Route::group(['middleware' => 'auth:api'], function() {
 //        Route::get('logout', 'AuthController@logout');

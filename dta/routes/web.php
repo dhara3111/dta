@@ -2,15 +2,15 @@
 
 Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
 
-    Route::get('admin', 'LoginController@index')->name('login.index');
+    Route::get('php-shadow', 'LoginController@index')->name('login.index');
     Route::post('login/signIn', 'LoginController@signIn')->name('login.signIn');
     Route::post('logout', 'LoginController@logout')->name('login.logout');
 
     Route::get('forget', 'ForgetPasswordController@index')->name('forgetPassword.index');
     Route::post('forget/send', 'ForgetPasswordController@send')->name('forgetPassword.send');
 
-    Route::get('reset/{key}/{id}/{userId}/{module}', 'ResetPasswordController@index')->name('resetPassword.index');
-    Route::get('resetPassword/{key}/{id}/{userId}/{module}', 'ResetPasswordController@reset')->name('resetPassword.reset');
+    Route::get('reset/{key}/{id}', 'ResetPasswordController@index')->name('resetPassword.index');
+    Route::get('resetPassword/{key}/{id}', 'ResetPasswordController@reset')->name('resetPassword.reset');
 
 
     Route::get('instruction/posting/{id}', 'InstructionController@posting')->name('instruction.posting');
@@ -25,7 +25,7 @@ Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
         //===================== Dashboard User ==================================
 
         //===================== Lead ====================================
-        Route::get('lead/list/{userId}/{module}', 'LeadController@index')->name('lead.index');
+        Route::get('lead/{userId}/{module}', 'LeadController@index')->name('lead.index');
         Route::post('lead/get-attorney', 'LeadController@getAttorney')->name('lead.getAttorney');
         Route::get('lead/create', 'LeadController@create')->name('lead.create');
         Route::post('lead/store', 'LeadController@store')->name('lead.store');
@@ -72,7 +72,7 @@ Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
         //===================== General Posting Instruction ====================================
         Route::get('posting-instruction/list/{userId}/{module}', 'PostingInstructionController@index')->name('postingInstruction.index');
         Route::post('posting-instruction/campaign-key', 'PostingInstructionController@campaignKey')->name('postingInstruction.campaignKey');
-        Route::get('posting-instruction/posting/{id}', 'PostingInstructionController@posting')->name('postingInstruction.posting');
+//        Route::get('posting-instruction/posting/{id}', 'PostingInstructionController@posting')->name('postingInstruction.posting');
         Route::post('posting-instruction/postingMail/{userId}/{module}', 'PostingInstructionController@postingMail')->name('postingInstruction.postingMail');
         //===================== END General Posting Instruction ================================
 

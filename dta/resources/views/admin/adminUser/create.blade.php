@@ -84,7 +84,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group m-form__group @if ($errors->has('name')) has-danger @endif">
                                             <label for="name">Name</label>
-                                            <input type="text" name="name" class="form-control m-input" id="name" value="{{old('name')}}" placeholder="Enter First Name" >
+                                            <input type="text" name="name" class="form-control m-input" id="name" value="{{old('name')}}" placeholder="Enter Name" >
                                             @if ($errors->has('name'))
                                                 <h6 class="m--font-danger m--margin-top-5">{{ $errors->first('name') }}</h6>
                                             @endif

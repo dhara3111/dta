@@ -19086,33 +19086,33 @@ strong {
     width:100%
 }
 .m-link {
-    color:#716aca
+    color:#da2129
 }
 .m-link:hover {
-    color:#5f57c3
+    color:#da2129
 }
 .m-link:hover:after {
-    border-bottom:1px solid #5f57c3;
+    border-bottom:1px solid #da2129 ;
     opacity:.3
 }
 .m-link.m-link--skin-dark {
-    color:#716aca
+    color:#da2129
 }
 .m-link.m-link--skin-dark:hover {
-    color:#5f57c3
+    color:#da2129
 }
 .m-link.m-link--skin-dark:hover:after {
-    border-bottom:1px solid #5f57c3;
+    border-bottom:1px solid #da2129 ;
     opacity:.3
 }
 .m-link.m-link--brand {
-    color:#716aca
+    color:#da2129
 }
 .m-link.m-link--brand:hover {
-    color:#4d44bd
+    color:#da2129
 }
 .m-link.m-link--brand:hover:after {
-    border-bottom:1px solid #4d44bd;
+    border-bottom:1px solid #da2129 ;
     opacity:.3
 }
 .m-link.m-link--metal {
@@ -40323,7 +40323,7 @@ select.m-select2 {
 }
 .m-login.m-login--6 .m-login__wrapper .m-login__body .m-login__signin .m-login__title>h3 {
     font-size:2rem;
-    color:#67666e
+    color:#000000
 }
 .m-login.m-login--6 .m-login__wrapper .m-login__body .m-login__signin .m-login__form {
     margin:4rem auto
@@ -40338,7 +40338,7 @@ select.m-select2 {
     padding:1.5rem 2.14rem;
     margin-top:1.3rem;
     background-color:#f7f7f9;
-    border-color:#f77747;
+    border-color:#da2129;
 }
 .m-login.m-login--6 .m-login__wrapper .m-login__body .m-login__signin .m-login__form .m-form__group .form-control:hover {
     background-color:#f4f5f8
@@ -40804,7 +40804,7 @@ select.m-select2 {
 }
 .m-mail .m-mail__aside .m-mail__menu .m-menu__nav .m-menu__item .m-menu__link .m-menu__link-title .m-menu__link-wrap .m-menu__link-text {
     font-size:.9rem;
-    font-weight:600
+        font-weight:600
 }
 .m-mail .m-mail__aside .m-mail__menu .m-menu__nav .m-menu__item .m-menu__link .m-menu__link-title .m-menu__link-wrap .m-badge {
     font-weight:600
